@@ -51,5 +51,7 @@
   "roomSettings": "Room Settings",
   "announcement": "Announcement",
   "dangerZone": "Danger Zone",
-  "deleteRoom": "Delete Room"
+  "deleteRoom": "Delete Room",
+  "chat": "Chat",
+  "users": "Users"
 }

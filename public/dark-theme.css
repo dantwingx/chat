@@ -218,3 +218,26 @@
     background-color: var(--bg-tertiary);
     border-color: var(--profile-photo-border);
 }
+
+/* Mobile-specific dark theme styles */
+.dark-theme .mobile-bottom-nav {
+    background-color: var(--bg-primary);
+    border-top-color: var(--border-color);
+}
+
+.dark-theme .nav-item {
+    color: var(--text-secondary);
+}
+
+.dark-theme .nav-item.active {
+    color: var(--button-bg);
+}
+
+.dark-theme .mobile-overlay {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.dark-theme .room-notification {
+    background-color: var(--bg-primary);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}

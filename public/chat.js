@@ -1,56 +1,73 @@
 // Initialize Socket.io
 const socket = io();
 
-// DOM Elements
-const loginScreen = document.getElementById('login-screen');
-const chatScreen = document.getElementById('chat-screen');
-const usernameInput = document.getElementById('username-input');
-const joinBtn = document.getElementById('join-btn');
-const errorMessage = document.getElementById('error-message');
-const messageInput = document.getElementById('message-input');
-const sendBtn = document.getElementById('send-btn');
-const messagesContainer = document.getElementById('messages-container');
-const usersList = document.getElementById('users-list');
-const currentUserSpan = document.getElementById('current-user');
-const typingIndicator = document.getElementById('typing-indicator');
-const settingsBtn = document.getElementById('settings-btn');
-const logoutBtn = document.getElementById('logout-btn');
-const settingsModal = document.getElementById('settings-modal');
-const darkModeToggle = document.getElementById('dark-mode-toggle');
-const languageSelect = document.getElementById('language-select');
-const profilePhotoInput = document.getElementById('profile-photo-input');
-const profilePhotoPreview = document.getElementById('profile-photo-preview');
-const bioInput = document.getElementById('bio-input');
+// DOM Elements - will be initialized after DOMContentLoaded
+let loginScreen, chatScreen, usernameInput, joinBtn, errorMessage;
+let messageInput, sendBtn, messagesContainer, usersList;
+let currentUserSpan, typingIndicator, settingsBtn, logoutBtn;
+let settingsModal, darkModeToggle, languageSelect;
+let profilePhotoInput, profilePhotoPreview, bioInput;
 
-// New DOM elements for media features
-const attachBtn = document.getElementById('attach-btn');
-const mediaGalleryBtn = document.getElementById('media-gallery-btn');
-const fileInput = document.getElementById('file-input');
-const uploadProgress = document.getElementById('upload-progress');
-const attachmentPreview = document.getElementById('attachment-preview');
-const attachmentList = document.getElementById('attachment-list');
-const newMessagesIndicator = document.getElementById('new-messages-indicator');
-const mediaGalleryModal = document.getElementById('media-gallery-modal');
-const mediaViewerModal = document.getElementById('media-viewer-modal');
-const mediaGrid = document.getElementById('media-grid');
-const viewerContent = document.getElementById('viewer-content');
-const selectAllBtn = document.getElementById('select-all-btn');
-const downloadSelectedBtn = document.getElementById('download-selected-btn');
+// Initialize DOM elements
+function initializeDOMElements() {
+    loginScreen = document.getElementById('login-screen');
+    chatScreen = document.getElementById('chat-screen');
+    usernameInput = document.getElementById('username-input');
+    joinBtn = document.getElementById('join-btn');
+    errorMessage = document.getElementById('error-message');
+    messageInput = document.getElementById('message-input');
+    sendBtn = document.getElementById('send-btn');
+    messagesContainer = document.getElementById('messages-container');
+    usersList = document.getElementById('users-list');
+    currentUserSpan = document.getElementById('current-user');
+    typingIndicator = document.getElementById('typing-indicator');
+    settingsBtn = document.getElementById('settings-btn');
+    logoutBtn = document.getElementById('logout-btn');
+    settingsModal = document.getElementById('settings-modal');
+    darkModeToggle = document.getElementById('dark-mode-toggle');
+    languageSelect = document.getElementById('language-select');
+    profilePhotoInput = document.getElementById('profile-photo-input');
+    profilePhotoPreview = document.getElementById('profile-photo-preview');
+    bioInput = document.getElementById('bio-input');
 
-// Room management DOM elements
-const roomsList = document.getElementById('rooms-list');
-const currentRoomName = document.getElementById('current-room-name');
-const roomAnnouncement = document.getElementById('room-announcement');
-const createRoomBtn = document.getElementById('create-room-btn');
-const roomSettingsBtn = document.getElementById('room-settings-btn');
-const createRoomModal = document.getElementById('create-room-modal');
-const roomSettingsModal = document.getElementById('room-settings-modal');
-const roomNameInput = document.getElementById('room-name-input');
-const roomDescriptionInput = document.getElementById('room-description-input');
-const roomMaxUsersInput = document.getElementById('room-max-users-input');
-const roomAnnouncementInput = document.getElementById('room-announcement-input');
-const deleteRoomBtn = document.getElementById('delete-room-btn');
-const deleteRoomSection = document.getElementById('delete-room-section');
+    // New DOM elements for media features
+    attachBtn = document.getElementById('attach-btn');
+    mediaGalleryBtn = document.getElementById('media-gallery-btn');
+    fileInput = document.getElementById('file-input');
+    uploadProgress = document.getElementById('upload-progress');
+    attachmentPreview = document.getElementById('attachment-preview');
+    attachmentList = document.getElementById('attachment-list');
+    newMessagesIndicator = document.getElementById('new-messages-indicator');
+    mediaGalleryModal = document.getElementById('media-gallery-modal');
+    mediaViewerModal = document.getElementById('media-viewer-modal');
+    mediaGrid = document.getElementById('media-grid');
+    viewerContent = document.getElementById('viewer-content');
+    selectAllBtn = document.getElementById('select-all-btn');
+    downloadSelectedBtn = document.getElementById('download-selected-btn');
+
+    // Room management DOM elements
+    roomsList = document.getElementById('rooms-list');
+    currentRoomName = document.getElementById('current-room-name');
+    roomAnnouncement = document.getElementById('room-announcement');
+    createRoomBtn = document.getElementById('create-room-btn');
+    roomSettingsBtn = document.getElementById('room-settings-btn');
+    createRoomModal = document.getElementById('create-room-modal');
+    roomSettingsModal = document.getElementById('room-settings-modal');
+    roomNameInput = document.getElementById('room-name-input');
+    roomDescriptionInput = document.getElementById('room-description-input');
+    roomMaxUsersInput = document.getElementById('room-max-users-input');
+    roomAnnouncementInput = document.getElementById('room-announcement-input');
+    deleteRoomBtn = document.getElementById('delete-room-btn');
+    deleteRoomSection = document.getElementById('delete-room-section');
+}
+
+// Declare variables for other DOM elements
+let attachBtn, mediaGalleryBtn, fileInput, uploadProgress, attachmentPreview;
+let attachmentList, newMessagesIndicator, mediaGalleryModal, mediaViewerModal;
+let mediaGrid, viewerContent, selectAllBtn, downloadSelectedBtn;
+let roomsList, currentRoomName, roomAnnouncement, createRoomBtn, roomSettingsBtn;
+let createRoomModal, roomSettingsModal, roomNameInput, roomDescriptionInput;
+let roomMaxUsersInput, roomAnnouncementInput, deleteRoomBtn, deleteRoomSection;
 
 // State
 let currentUsername = '';
@@ -73,6 +90,13 @@ let messageReadCounts = new Map();
 
 // Initialize i18n and dark mode
 async function init() {
+    // Initialize DOM elements first
+    initializeDOMElements();
+    
+    // Initialize event listeners
+    initializeEventListeners();
+    initializeOtherEventListeners();
+    
     // Initialize i18n
     await i18n.init();
     
@@ -80,14 +104,21 @@ async function init() {
     const darkMode = localStorage.getItem('darkMode') === 'true';
     if (darkMode) {
         document.documentElement.classList.add('dark-theme');
-        darkModeToggle.checked = true;
+        if (darkModeToggle) {
+            darkModeToggle.checked = true;
+        }
     }
     
     // Set language in select
-    languageSelect.value = i18n.currentLanguage;
+    if (languageSelect) {
+        languageSelect.value = i18n.currentLanguage;
+    }
     
     // Initialize UI state based on current authentication
     updateUIBasedOnAuthState();
+    
+    // Initialize mobile navigation
+    initializeMobileNavigation();
     
     // Check for existing session
     const savedSessionId = localStorage.getItem('sessionId');
@@ -140,126 +171,168 @@ async function init() {
     }
 }
 
-// Event Listeners
-joinBtn.addEventListener('click', joinChat);
-usernameInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') joinChat();
-});
+// Event Listeners - moved to initializeOtherEventListeners()
 
-sendBtn.addEventListener('click', sendMessage);
-messageInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        sendMessage();
-    } else {
-        handleTyping();
+// This function is called from init() after DOM elements are initialized
+function initializeOtherEventListeners() {
+    // Basic event listeners
+    if (joinBtn) joinBtn.addEventListener('click', joinChat);
+    if (usernameInput) {
+        usernameInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') joinChat();
+        });
     }
-});
 
-settingsBtn.addEventListener('click', openSettings);
-logoutBtn.addEventListener('click', logout);
-
-// New event listeners for media features
-attachBtn.addEventListener('click', () => fileInput.click());
-mediaGalleryBtn.addEventListener('click', openMediaGallery);
-fileInput.addEventListener('change', handleFileSelection);
-newMessagesIndicator.addEventListener('click', scrollToBottom);
-
-// Room management event listeners
-createRoomBtn.addEventListener('click', (e) => {
-    // Prevent room creation if not authenticated
-    if (!currentUsername || currentUsername.trim() === '') {
-        e.preventDefault();
-        console.error('Room creation attempted without authentication');
-        alert('Error: You must be logged in to create a room. Please refresh the page and log in again.');
-        return;
-    }
-    openCreateRoomModal();
-});
-roomSettingsBtn.addEventListener('click', openRoomSettings);
-
-// Create room modal event listeners
-createRoomModal.querySelector('.modal-overlay').addEventListener('click', closeCreateRoomModal);
-createRoomModal.querySelector('.close-btn').addEventListener('click', closeCreateRoomModal);
-createRoomModal.querySelector('.cancel').addEventListener('click', closeCreateRoomModal);
-createRoomModal.querySelector('.save').addEventListener('click', createRoom);
-
-// Room settings modal event listeners
-roomSettingsModal.querySelector('.modal-overlay').addEventListener('click', closeRoomSettings);
-roomSettingsModal.querySelector('.close-btn').addEventListener('click', closeRoomSettings);
-roomSettingsModal.querySelector('.cancel').addEventListener('click', closeRoomSettings);
-roomSettingsModal.querySelector('.save').addEventListener('click', saveRoomSettings);
-deleteRoomBtn?.addEventListener('click', deleteRoom);
-
-// Message container scroll handling
-messagesContainer.addEventListener('scroll', () => {
-    const isAtBottom = messagesContainer.scrollHeight - messagesContainer.scrollTop <= messagesContainer.clientHeight + 50;
-    
-    if (isAtBottom) {
-        autoScroll = true;
-        newMessagesIndicator.style.display = 'none';
-        markVisibleMessagesAsRead();
-    } else {
-        autoScroll = false;
-    }
-});
-
-// Intersection Observer for read receipts
-const messageObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            const messageId = entry.target.dataset.messageId;
-            if (messageId && !visibleMessageIds.has(messageId)) {
-                visibleMessageIds.add(messageId);
-                unreadMessages = unreadMessages.filter(id => id !== messageId);
+    if (sendBtn) sendBtn.addEventListener('click', sendMessage);
+    if (messageInput) {
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            } else {
+                handleTyping();
             }
-        }
-    });
+        });
+    }
+
+    if (settingsBtn) settingsBtn.addEventListener('click', openSettings);
+    if (logoutBtn) logoutBtn.addEventListener('click', logout);
+
+    // New event listeners for media features
+    if (attachBtn && fileInput) attachBtn.addEventListener('click', () => fileInput.click());
+    if (mediaGalleryBtn) mediaGalleryBtn.addEventListener('click', openMediaGallery);
+    if (fileInput) fileInput.addEventListener('change', handleFileSelection);
+    if (newMessagesIndicator) newMessagesIndicator.addEventListener('click', scrollToBottom);
+
+    // Room management event listeners
+    if (createRoomBtn) {
+        createRoomBtn.addEventListener('click', (e) => {
+            // Prevent room creation if not authenticated
+            if (!currentUsername || currentUsername.trim() === '') {
+                e.preventDefault();
+                console.error('Room creation attempted without authentication');
+                alert('Error: You must be logged in to create a room. Please refresh the page and log in again.');
+                return;
+            }
+            openCreateRoomModal();
+        });
+    }
+    if (roomSettingsBtn) roomSettingsBtn.addEventListener('click', openRoomSettings);
+
+    // Create room modal event listeners
+    if (createRoomModal) {
+        createRoomModal.querySelector('.modal-overlay').addEventListener('click', closeCreateRoomModal);
+        createRoomModal.querySelector('.close-btn').addEventListener('click', closeCreateRoomModal);
+        createRoomModal.querySelector('.cancel').addEventListener('click', closeCreateRoomModal);
+        createRoomModal.querySelector('.save').addEventListener('click', createRoom);
+    }
+
+    // Room settings modal event listeners
+    if (roomSettingsModal) {
+        roomSettingsModal.querySelector('.modal-overlay').addEventListener('click', closeRoomSettings);
+        roomSettingsModal.querySelector('.close-btn').addEventListener('click', closeRoomSettings);
+        roomSettingsModal.querySelector('.cancel').addEventListener('click', closeRoomSettings);
+        roomSettingsModal.querySelector('.save').addEventListener('click', saveRoomSettings);
+    }
+    if (deleteRoomBtn) deleteRoomBtn.addEventListener('click', deleteRoom);
     
-    // Batch send read receipts
-    if (visibleMessageIds.size > 0) {
-        const messageIds = Array.from(visibleMessageIds);
-        socket.emit('mark-messages-read', messageIds);
+    // Initialize scroll handling and message observer
+    initializeScrollHandling();
+    initializeMessageObserver();
+}
+
+// Message container scroll handling - moved to initializeOtherEventListeners
+function initializeScrollHandling() {
+    if (messagesContainer) {
+        messagesContainer.addEventListener('scroll', () => {
+            const isAtBottom = messagesContainer.scrollHeight - messagesContainer.scrollTop <= messagesContainer.clientHeight + 50;
+    
+            if (isAtBottom) {
+                autoScroll = true;
+                if (newMessagesIndicator) newMessagesIndicator.style.display = 'none';
+                markVisibleMessagesAsRead();
+            } else {
+                autoScroll = false;
+            }
+        });
     }
-}, {
-    root: messagesContainer,
-    threshold: 0.5
-});
+}
 
-// Settings modal event listeners
-document.querySelector('.modal-overlay').addEventListener('click', closeSettings);
-document.querySelector('.close-btn').addEventListener('click', closeSettings);
-document.querySelector('.modal-actions .cancel').addEventListener('click', closeSettings);
-document.querySelector('.modal-actions .save').addEventListener('click', saveSettings);
+// Intersection Observer for read receipts - create it after DOM is ready
+let messageObserver;
 
-darkModeToggle.addEventListener('change', (e) => {
-    if (e.target.checked) {
-        document.documentElement.classList.add('dark-theme');
-    } else {
-        document.documentElement.classList.remove('dark-theme');
+function initializeMessageObserver() {
+    if (messagesContainer) {
+        messageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const messageId = entry.target.dataset.messageId;
+                    if (messageId && !visibleMessageIds.has(messageId)) {
+                        visibleMessageIds.add(messageId);
+                        unreadMessages = unreadMessages.filter(id => id !== messageId);
+                    }
+                }
+            });
+            
+            // Batch send read receipts
+            if (visibleMessageIds.size > 0) {
+                const messageIds = Array.from(visibleMessageIds);
+                socket.emit('mark-messages-read', messageIds);
+            }
+        }, {
+            root: messagesContainer,
+            threshold: 0.5
+        });
     }
-});
+}
 
-languageSelect.addEventListener('change', async (e) => {
-    await i18n.setLanguage(e.target.value);
-});
-
-profilePhotoInput.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (file) {
-        if (file.size > 5 * 1024 * 1024) {
-            alert(i18n.t('maxFileSize'));
-            e.target.value = '';
-            return;
-        }
-        
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            profilePhotoPreview.innerHTML = `<img src="${e.target.result}" alt="Profile">`;
-        };
-        reader.readAsDataURL(file);
+// Initialize event listeners after DOM is ready
+function initializeEventListeners() {
+    // Settings modal event listeners
+    if (settingsModal) {
+        settingsModal.querySelector('.modal-overlay').addEventListener('click', closeSettings);
+        settingsModal.querySelector('.close-btn').addEventListener('click', closeSettings);
+        settingsModal.querySelector('.modal-actions .cancel').addEventListener('click', closeSettings);
+        settingsModal.querySelector('.modal-actions .save').addEventListener('click', saveSettings);
     }
-});
+
+    if (darkModeToggle) {
+        darkModeToggle.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                document.documentElement.classList.add('dark-theme');
+                localStorage.setItem('darkMode', 'true');
+            } else {
+                document.documentElement.classList.remove('dark-theme');
+                localStorage.setItem('darkMode', 'false');
+            }
+        });
+    }
+
+    if (languageSelect) {
+        languageSelect.addEventListener('change', async (e) => {
+            await i18n.setLanguage(e.target.value);
+        });
+    }
+
+    if (profilePhotoInput) {
+        profilePhotoInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                if (file.size > 5 * 1024 * 1024) {
+                    alert(i18n.t('maxFileSize'));
+                    e.target.value = '';
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    profilePhotoPreview.innerHTML = `<img src="${e.target.result}" alt="Profile">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+}
 
 // Functions
 function joinChat() {
@@ -540,9 +613,18 @@ function openSettings() {
     if (currentProfile.profilePhoto && currentProfile.profilePhoto !== 'null' && currentProfile.profilePhoto !== 'undefined') {
         profilePhotoPreview.innerHTML = `<img src="${currentProfile.profilePhoto}" alt="Profile">`;
     } else {
-        profilePhotoPreview.innerHTML = '';
+        profilePhotoPreview.innerHTML = `
+            <div class="profile-photo-placeholder">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </div>`;
     }
     bioInput.value = currentProfile.bio || '';
+    
+    // Ensure dark mode toggle reflects current state
+    darkModeToggle.checked = document.documentElement.classList.contains('dark-theme');
 }
 
 function closeSettings() {
@@ -1360,11 +1442,16 @@ socket.on('switch-room-error', (error) => {
 socket.on('room-created', (room) => {
     rooms.push(room);
     updateRoomsList();
+    showRoomNotification(`New room created: ${room.name}`);
 });
 
 socket.on('room-removed', (data) => {
+    const removedRoom = rooms.find(r => r.id === data.roomId);
     rooms = rooms.filter(r => r.id !== data.roomId);
     updateRoomsList();
+    if (removedRoom) {
+        showRoomNotification(`Room deleted: ${removedRoom.name}`);
+    }
 });
 
 socket.on('room-deleted', (data) => {
@@ -1386,8 +1473,102 @@ socket.on('announcement-updated', (data) => {
     }
 });
 
-// Initialize the app
-init();
+// Initialize the app when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        init();
+    });
+} else {
+    // DOM is already ready
+    init();
+}
+
+// Mobile navigation functions
+function initializeMobileNavigation() {
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileOverlay = document.getElementById('mobile-overlay');
+    const roomSidebar = document.querySelector('.room-sidebar');
+    const userSidebar = document.querySelector('.sidebar');
+    const navItems = document.querySelectorAll('.nav-item');
+    
+    // Mobile menu toggle
+    if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', () => {
+            roomSidebar.classList.toggle('active');
+            mobileOverlay.classList.toggle('active');
+        });
+    }
+    
+    // Close mobile menu on overlay click
+    if (mobileOverlay) {
+        mobileOverlay.addEventListener('click', () => {
+            roomSidebar.classList.remove('active');
+            userSidebar.classList.remove('active');
+            mobileOverlay.classList.remove('active');
+        });
+    }
+    
+    // Bottom navigation
+    const ALLOWED_PAGES = new Set(['chat', 'rooms', 'users', 'settings']);
+    
+    navItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const page = item.getAttribute('data-page');
+            
+            // Validate page value for security
+            if (!ALLOWED_PAGES.has(page)) {
+                console.error('Invalid page navigation attempt:', page);
+                return;
+            }
+            
+            // Remove active class from all nav items
+            navItems.forEach(nav => nav.classList.remove('active'));
+            item.classList.add('active');
+            
+            // Close any open sidebars
+            roomSidebar.classList.remove('active');
+            userSidebar.classList.remove('active');
+            mobileOverlay.classList.remove('active');
+            
+            switch(page) {
+                case 'rooms':
+                    roomSidebar.classList.add('active');
+                    mobileOverlay.classList.add('active');
+                    break;
+                case 'users':
+                    userSidebar.classList.add('active');
+                    mobileOverlay.classList.add('active');
+                    break;
+                case 'settings':
+                    openSettings();
+                    break;
+                case 'chat':
+                default:
+                    // Just close sidebars, chat is already visible
+                    break;
+            }
+        });
+    });
+}
+
+// Show room notification on mobile
+function showRoomNotification(message, duration = 3000) {
+    const notification = document.getElementById('room-notification');
+    if (notification && window.innerWidth <= 600) {
+        // Limit message length for security and UI consistency
+        const MAX_NOTIFICATION_LENGTH = 100;
+        const safeMessage = message.length > MAX_NOTIFICATION_LENGTH 
+            ? message.substring(0, MAX_NOTIFICATION_LENGTH) + '...' 
+            : message;
+            
+        notification.textContent = safeMessage;
+        notification.style.display = 'block';
+        
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, duration);
+    }
+}
 
 // Debug function to check authentication state
 function debugAuthState() {
