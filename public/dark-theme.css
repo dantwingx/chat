@@ -1,0 +1,220 @@
+/* Dark theme variables */
+:root.dark-theme {
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #2d2d2d;
+    --bg-tertiary: #3a3a3a;
+    --text-primary: #e0e0e0;
+    --text-secondary: #b0b0b0;
+    --text-tertiary: #808080;
+    --border-color: #404040;
+    --input-bg: #2d2d2d;
+    --input-border: #404040;
+    --button-bg: #5a4fcf;
+    --button-hover: #4a3fbf;
+    --message-own-bg: #5a4fcf;
+    --message-other-bg: #3a3a3a;
+    --sidebar-bg: #1a1a1a;
+    --header-bg: #2d2d2d;
+    --chat-bg: #242424;
+    --system-message: #808080;
+    --error-color: #ff6b6b;
+    --success-color: #51cf66;
+    --modal-bg: #2d2d2d;
+    --modal-overlay: rgba(0, 0, 0, 0.7);
+    --user-item-bg: rgba(255, 255, 255, 0.05);
+    --user-item-typing-bg: rgba(90, 79, 207, 0.2);
+    --profile-photo-border: #404040;
+}
+
+/* Apply dark theme styles */
+.dark-theme body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.dark-theme #login-screen {
+    background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+}
+
+.dark-theme .login-container {
+    background: var(--bg-secondary);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.dark-theme .login-container h1 {
+    color: var(--text-primary);
+}
+
+.dark-theme #username-input,
+.dark-theme #message-input,
+.dark-theme input[type="text"],
+.dark-theme textarea {
+    background-color: var(--input-bg);
+    border-color: var(--input-border);
+    color: var(--text-primary);
+}
+
+.dark-theme #username-input:focus,
+.dark-theme #message-input:focus,
+.dark-theme input[type="text"]:focus,
+.dark-theme textarea:focus {
+    border-color: var(--button-bg);
+}
+
+.dark-theme #join-btn,
+.dark-theme #send-btn,
+.dark-theme button {
+    background-color: var(--button-bg);
+}
+
+.dark-theme #join-btn:hover,
+.dark-theme #send-btn:hover,
+.dark-theme button:hover:not(:disabled) {
+    background-color: var(--button-hover);
+}
+
+.dark-theme .chat-container {
+    background-color: var(--bg-primary);
+}
+
+.dark-theme .sidebar {
+    background-color: var(--sidebar-bg);
+}
+
+.dark-theme .user-item {
+    background-color: var(--user-item-bg);
+}
+
+.dark-theme .user-item.typing {
+    background-color: var(--user-item-typing-bg);
+}
+
+.dark-theme .chat-header {
+    background-color: var(--header-bg);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.dark-theme .messages-container {
+    background-color: var(--chat-bg);
+}
+
+.dark-theme .message-bubble {
+    background-color: var(--message-other-bg);
+}
+
+.dark-theme .message.own .message-bubble {
+    background-color: var(--message-own-bg);
+}
+
+.dark-theme .message-info {
+    color: var(--text-tertiary);
+}
+
+.dark-theme .system-message {
+    color: var(--system-message);
+}
+
+.dark-theme .typing-indicator {
+    color: var(--text-tertiary);
+}
+
+.dark-theme .message-input-container {
+    border-top-color: var(--border-color);
+    background-color: var(--bg-secondary);
+}
+
+.dark-theme .error-message {
+    color: var(--error-color);
+}
+
+/* Settings modal dark theme */
+.dark-theme .modal-overlay {
+    background-color: var(--modal-overlay);
+}
+
+.dark-theme .modal-content {
+    background-color: var(--modal-bg);
+    color: var(--text-primary);
+}
+
+.dark-theme .modal-header {
+    border-bottom-color: var(--border-color);
+}
+
+.dark-theme .settings-section {
+    border-bottom-color: var(--border-color);
+}
+
+.dark-theme .settings-section h3 {
+    color: var(--text-primary);
+}
+
+.dark-theme .settings-row label {
+    color: var(--text-secondary);
+}
+
+.dark-theme select {
+    background-color: var(--input-bg);
+    border-color: var(--input-border);
+    color: var(--text-primary);
+}
+
+.dark-theme .toggle-switch {
+    background-color: var(--input-bg);
+}
+
+.dark-theme .toggle-switch input:checked + .toggle-slider {
+    background-color: var(--button-bg);
+}
+
+.dark-theme .toggle-slider {
+    background-color: var(--border-color);
+}
+
+.dark-theme .profile-photo-container {
+    background-color: var(--bg-tertiary);
+    border-color: var(--profile-photo-border);
+}
+
+.dark-theme .profile-photo-placeholder {
+    background-color: var(--bg-tertiary);
+    color: var(--text-tertiary);
+}
+
+.dark-theme .upload-btn {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+.dark-theme .upload-btn:hover {
+    background-color: var(--input-bg);
+}
+
+.dark-theme .modal-actions button.cancel {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+}
+
+.dark-theme .modal-actions button.cancel:hover {
+    background-color: var(--input-bg);
+}
+
+/* Additional dark theme adjustments */
+.dark-theme .header-actions {
+    gap: 10px;
+}
+
+.dark-theme .icon-button {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+}
+
+.dark-theme .icon-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.dark-theme .message-avatar {
+    background-color: var(--bg-tertiary);
+    border-color: var(--profile-photo-border);
+}
